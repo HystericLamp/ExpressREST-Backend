@@ -1,0 +1,30 @@
+{
+  "name": "tlthp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HystericLamp/TLTHP.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HystericLamp/TLTHP/issues"
+  },
+  "homepage": "https://github.com/HystericLamp/TLTHP#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  },
+  "scripts": {
+  "start": "node index.js",
+  "dev": "nodemon index.js"
+  }
+}
