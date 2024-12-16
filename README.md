@@ -18,15 +18,15 @@ POST - /rest/patients/ <br/>
 PUT - /rest/patients/:id <br/>
 DELETE - /rest/patients/:id <br/>
 
-Clinicians
-GET - /rest/clinicians
-GET - /rest/clinicians/:npi
-POST - /rest/clinicians/
-PUT - /rest/clinicians/:npi
-DELETE - /rest/clinicians/:npi
+Clinicians <br/>
+GET - /rest/clinicians <br/>
+GET - /rest/clinicians/:npi <br/>
+POST - /rest/clinicians/ <br/>
+PUT - /rest/clinicians/:npi <br/>
+DELETE - /rest/clinicians/:npi <br/>
 
 Appointments
-GET - /rest/appointments
-POST - /rest/appointments/
-PUT - /rest/appointments/:id
-DELETE - /rest/appointments/:id
+GET - /rest/appointments <br/>
+POST - /rest/appointments/ <br/>
+PUT - /rest/appointments/:id <br/>
+DELETE - /rest/appointments/:id <br/>
