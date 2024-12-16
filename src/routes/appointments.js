@@ -1,52 +1,79 @@
 const express = require('express');
 const router = express.Router();
 
-// Mock database
-let appointments = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' }
-  ];
+// Connect to database
+var db = require("../db-connect.js")
 
 // Get all appointments
 router.get('/', (request, response) => {
-    response.json(appointments);
+    var query = "select * from appointments"
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            response.status(500).json({ error: err.message });
+        } else {
+            response.json({ appointments: rows });
+        }
+    });
 });
   
 // Get a specific appointment
 router.get('/:id', (request, response) => {
-const appointment = appointments.find(a => a.id === parseInt(request.params.id));
-    if (appointment) {
-        response.json(appointment);
-    } else {
-        response.status(404).json({ message: 'Appointment not found' });
-    }
+    var query = "select * from appointments where appointment_id = ?"
+    var params = [request.params.id]
+    db.get(query, params, (err, row) => {
+        if (err) {
+            response.status(400).json({"error":err.message});
+          return;
+        }
+
+        response.json({"data":row})
+    });
 });
 
 // Create a new appointment
 router.post('/', (request, response) => {
-    const newAppointment = {
-        id: appointment.length + 1,
-        name: request.body.name
-    };
-    appointments.push(newAppointment);
-    response.status(201).json(newAppointment);
+    var { appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status } = request.body;
+    var query = `INSERT INTO appointments (appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status) 
+                 VALUES (?, ?, ?, ?, ?, ?)`;
+    db.run(query, [appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status], function(err) {
+        if (err) {
+            response.status(500).json({ error: err.message });
+        } else {
+            response.json({ id: this.lastID });
+        }
+    });
 });
 
-// Update a appointment
+// Update an appointment
 router.put('/:id', (request, response) => {
-const appointment = appointments.find(a => a.id === parseInt(request.params.id));
-    if (appointment) {
-        appointment.name = request.body.name;
-        response.json(appointment);
-    } else {
-        response.status(404).json({ message: 'Appointment not found' });
-    }
+    var { id } = request.params;
+    var { appointed_patient, scheduled_clinician, appointment_date, appointment_time, status } = request.body;
+    var query = `UPDATE appointments SET appointment_id = ?,
+                                         appointed_patient = ?, 
+                                         scheduled_clinician = ?, 
+                                         appointment_date = ?, 
+                                         appointment_time = ?, 
+                                         status = ?
+                                         WHERE appointment_id = ?`;
+    
+    db.run(query, [id, appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status, id], function(err) {
+        if (err) {
+          return response.status(500).send({ message: 'Failed to update appointment', error: err.message });
+        }
+        response.status(200).send({ message: 'appointment updated', changes: this.changes });
+    });
 });
 
-// Delete a clinician
+// Delete an appointment
 router.delete('/:id', (request, response) => {
-    appointments = appointments.filter(a => a.id !== parseInt(request.params.id));
-    response.json({ message: 'Appointment deleted' });
+    var { id } = request.params;
+    var query = 'DELETE FROM appointments WHERE appointment_id = ?'
+    db.run(query, [id], function(err) {
+        if (err) {
+            return response.status(500).send({ message: 'Failed to delete appointment', error: err.message });
+        }
+        response.status(200).send({ message: 'appointment has been deleted', changes: this.changes });
+    });
 });
 
 module.exports = router;

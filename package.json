@@ -2,12 +2,11 @@
   "name": "tlthp",
   "version": "1.0.0",
   "description": "",
-  "main": "src/app.js",
+  "main": "src/server.js",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon src/app.js",
-    "init": "node src/run-init-sql.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "dbinit": "node src/run-init-sql.js"
   },
   "repository": {
     "type": "git",

@@ -14,10 +14,11 @@ CREATE TABLE IF NOT EXISTS clinician (
     npi INTEGER PRIMARY KEY,
     firstname TEXT NOT NULL,
     lastname TEXT NOT NULL,
-    birth_date DATE NOT NULL,
+    organization TEXT NOT NULL,
     address TEXT NOT NULL,
-    email TEXT UNIQUE NOT NULL,
-    phone TEXT NOT NULL
+    city TEXT NOT NULL,
+    state TEXT NOT NULL,
+    postal_code TEXT NOT NULL
 );
 
 -- Create an appointments table
@@ -40,9 +41,9 @@ INSERT INTO patient (firstname, lastname, birth_date, address, email, phone) VAL
 ('Bob', 'Jones', '1980-03-05', '321 Birch Ln, Hamletburg', 'bob.jones@example.com', '555-333-4444');
 
 -- Insert data into the clinician table
-INSERT INTO clinician (npi, firstname, lastname, birth_date, address, email, phone) VALUES
-(100200300, 'Emily', 'Green', '1970-05-08', '101 Hospital Way, Medicity', 'emily.green@hospital.com', '555-555-1212'),
-(100200301, 'James', 'White', '1965-11-20', '202 Wellness Rd, Healthville', 'james.white@clinic.org', '555-555-3434');
+INSERT INTO clinician (npi, firstname, lastname, organization, address, city, state, postal_code) VALUES
+(100200300, 'Emily', 'Green', 'Med Ltd.', '101 Hospital Way', 'Medicity', 'Medstate', 'G5G 5G5'),
+(100200301, 'James', 'White', 'Health Inc.', '202 Wellness Rd', 'Healthville', 'Healthstate', 'H7H 7H7');
 
 -- Insert data into the appointments table
 INSERT INTO appointments (appointed_patient, scheduled_clinician, appointment_date, appointment_time, status) VALUES

@@ -1,52 +1,80 @@
 const express = require('express');
 const router = express.Router();
 
-// Mock database
-let clinicians = [
-    { id: 1, name: 'Alice' },
-    { id: 2, name: 'Bob' }
-  ];
+// Connect to database
+var db = require("../db-connect.js")
 
 // Get all clinicians
 router.get('/', (request, response) => {
-    response.json(clinicians);
+    var query = "select * from clinician"
+    db.all(query, [], (err, rows) => {
+        if (err) {
+            response.status(500).json({ error: err.message });
+        } else {
+            response.json({ clinicians: rows });
+        }
+    });
 });
   
 // Get a specific clinician
-router.get('/:id', (request, response) => {
-const clinician = clinicians.find(c => c.id === parseInt(request.params.id));
-    if (clinician) {
-        response.json(clinician);
-    } else {
-        response.status(404).json({ message: 'Clinician not found' });
-    }
+router.get('/:npi', (request, response) => {
+    var query = "select * from clinician where npi = ?"
+    var params = [request.params.npi]
+    db.get(query, params, (err, row) => {
+        if (err) {
+            response.status(400).json({"error":err.message});
+          return;
+        }
+
+        response.json({"data":row})
+    });
 });
 
 // Create a new clinician
 router.post('/', (request, response) => {
-    const newClinician = {
-        id: clinician.length + 1,
-        name: request.body.name
-    };
-    clinicians.push(newClinician);
-    response.status(201).json(newClinician);
+    var { npi, firstname, lastname, organization, address, city, state, postal_code } = request.body;
+    var query = `INSERT INTO clinician (npi, firstname, lastname, organization, address, city, state, postal_code) 
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    db.run(query, [npi, firstname, lastname, organization, address, city, state, postal_code], function(err) {
+        if (err) {
+            response.status(500).json({ error: err.message });
+        } else {
+            response.json({ npi: this.lastID });
+        }
+    });
 });
 
 // Update a clinician
-router.put('/:id', (request, response) => {
-const clinician = clinicians.find(c => c.id === parseInt(request.params.id));
-    if (clinician) {
-        clinician.name = request.body.name;
-        response.json(clinician);
-    } else {
-        response.status(404).json({ message: 'Clinician not found' });
-    }
+router.patch('/:npi', (request, response) => {
+    var { npi } = request.params;
+    var { firstname, lastname, organization, address, city, state, postal_code } = request.body;
+    var query = `UPDATE clinician SET firstname = ?, 
+                                      lastname = ?, 
+                                      organization = ?, 
+                                      address = ?, 
+                                      city = ?, 
+                                      state = ?,
+                                      postal_code = ?
+                                      WHERE npi = ?`;
+    
+    db.run(query, [firstname, lastname, organization, address, city, state, postal_code, npi], function(err) {
+        if (err) {
+          return response.status(500).send({ message: 'Failed to update clinician', error: err.message });
+        }
+        response.status(200).send({ message: 'clinician updated', changes: this.changes });
+    });
 });
 
 // Delete a clinician
-router.delete('/:id', (request, response) => {
-    clinicians = clinicians.filter(c => c.id !== parseInt(request.params.id));
-    response.json({ message: 'Clinician deleted' });
+router.delete('/:npi', (request, response) => {
+    var { npi } = request.params;
+    var query = 'DELETE FROM clinician WHERE npi = ?'
+    db.run(query, [npi], function(err) {
+        if (err) {
+            return response.status(500).send({ message: 'Failed to delete clinician', error: err.message });
+        }
+        response.status(200).send({ message: 'Clinician has been deleted', changes: this.changes });
+    });
 });
 
 module.exports = router;
