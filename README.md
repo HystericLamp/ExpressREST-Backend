@@ -11,12 +11,12 @@
 [Download Database Schema](https://github.com/HystericLamp/TLTHP-Part1/blob/main/TLTHP%20Database%20Schema.pdf)
 
 ### Endpoints
-Patients
-GET - /rest/patients
-GET - /rest/patients/:id
-POST - /rest/patients/
-PUT - /rest/patients/:id
-DELETE - /rest/patients/:id
+Patients <br/>
+GET - /rest/patients <br/>
+GET - /rest/patients/:id <br/>
+POST - /rest/patients/ <br/>
+PUT - /rest/patients/:id <br/>
+DELETE - /rest/patients/:id <br/>
 
 Clinicians
 GET - /rest/clinicians
