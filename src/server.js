@@ -7,7 +7,7 @@ const cors = require('cors');
 app.use(cors());
 
 // Server port
-const port = 3000
+const port = 8000
 
 // middleware to parse JSON
 app.use(express.json());

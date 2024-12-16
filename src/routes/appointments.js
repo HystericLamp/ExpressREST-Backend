@@ -4,29 +4,17 @@ const router = express.Router();
 // Connect to database
 var db = require("../db-connect.js")
 
-// Get all appointments
+// Get all appointments for list display
 router.get('/', (request, response) => {
-    var query = "select * from appointments"
+    var query = `SELECT a.appointment_id, p.firstname, p.lastname, a.appointment_date, a.appointment_time, a.status
+                 FROM appointments a
+                 JOIN patient p ON p.patient_id = a.appointed_patient`
     db.all(query, [], (err, rows) => {
         if (err) {
             response.status(500).json({ error: err.message });
         } else {
             response.json({ appointments: rows });
         }
-    });
-});
-  
-// Get a specific appointment
-router.get('/:id', (request, response) => {
-    var query = "select * from appointments where appointment_id = ?"
-    var params = [request.params.id]
-    db.get(query, params, (err, row) => {
-        if (err) {
-            response.status(400).json({"error":err.message});
-          return;
-        }
-
-        response.json({"data":row})
     });
 });
 
