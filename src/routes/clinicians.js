@@ -7,6 +7,7 @@ var db = require("../db-connect.js")
 // Get all clinicians
 router.get('/', (request, response) => {
     var query = "select * from clinician"
+
     db.all(query, [], (err, rows) => {
         if (err) {
             response.status(500).json({ error: err.message });
@@ -20,6 +21,7 @@ router.get('/', (request, response) => {
 router.get('/:npi', (request, response) => {
     var query = "select * from clinician where npi = ?"
     var params = [request.params.npi]
+
     db.get(query, params, (err, row) => {
         if (err) {
             response.status(400).json({"error":err.message});
@@ -35,6 +37,7 @@ router.post('/', (request, response) => {
     var { npi, firstname, lastname, organization, address, city, state, postal_code } = request.body;
     var query = `INSERT INTO clinician (npi, firstname, lastname, organization, address, city, state, postal_code) 
                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+    
     db.run(query, [npi, firstname, lastname, organization, address, city, state, postal_code], function(err) {
         if (err) {
             response.status(500).json({ error: err.message });

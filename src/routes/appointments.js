@@ -9,6 +9,7 @@ router.get('/', (request, response) => {
     var query = `SELECT a.appointment_id, p.firstname, p.lastname, a.appointment_date, a.appointment_time, a.status
                  FROM appointments a
                  JOIN patient p ON p.patient_id = a.appointed_patient`
+    
     db.all(query, [], (err, rows) => {
         if (err) {
             response.status(500).json({ error: err.message });
@@ -23,6 +24,7 @@ router.post('/', (request, response) => {
     var { appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status } = request.body;
     var query = `INSERT INTO appointments (appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status) 
                  VALUES (?, ?, ?, ?, ?, ?)`;
+    
     db.run(query, [appointment_id, appointed_patient, scheduled_clinician, appointment_date, appointment_time, status], function(err) {
         if (err) {
             response.status(500).json({ error: err.message });
@@ -56,6 +58,7 @@ router.put('/:id', (request, response) => {
 router.delete('/:id', (request, response) => {
     var { id } = request.params;
     var query = 'DELETE FROM appointments WHERE appointment_id = ?'
+    
     db.run(query, [id], function(err) {
         if (err) {
             return response.status(500).send({ message: 'Failed to delete appointment', error: err.message });
