@@ -18,14 +18,14 @@ app.get("/", (request, response, next) => {
 });
 
 // Routes
-const patientRoutes = require('./routes/patients');
+const patientRoutes = require('./routes/patientRoutes');
 app.use('/rest/patients', patientRoutes);
 
-const clinicianRoutes = require('./routes/clinicians');
+const clinicianRoutes = require('./routes/clinicianRoutes');
 app.use('/rest/clinicians', clinicianRoutes);
 
-const appointmentRoutes = require('./routes/appointments');
-app.use('/rest/appointments', appointmentRoutes);
+const appointmentsRoutes = require('./routes/appointmentsRoutes');
+app.use('/rest/appointments', appointmentsRoutes);
 
 // Default response for any other request
 app.use(function(request, response){
