@@ -1,4 +1,4 @@
-# TLTHP - Part 1
+# Express REST Backend Example
 
 ### Setup
 1. Install node and npm
