@@ -23,7 +23,7 @@ Clinicians <br/>
 GET - /rest/clinicians <br/>
 GET - /rest/clinicians/:npi <br/>
 POST - /rest/clinicians/ <br/>
-PUT - /rest/clinicians/:npi <br/>
+PATCH - /rest/clinicians/:npi <br/>
 DELETE - /rest/clinicians/:npi <br/>
 
 Appointments
